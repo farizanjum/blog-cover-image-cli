@@ -1,4 +1,4 @@
-# Blog Cover Image CLI 🎨
+# Blog Cover Image CLI
 
 A modern, AI-powered CLI tool designed to automatically generate high-converting, minimalist blog cover images and thumbnails using **Gemini 3.1 Flash Image Preview**. 
 

@@ -9,6 +9,14 @@ This skill provides AI agents with the ability to generate stunning, minimalist,
 
 ## Setup & Configuration
 
+**Agent Pre-requisites:**
+Before using this tool, verify it is installed. If `blog-cover-cli --help` fails, install it globally:
+```bash
+npm install -g blog-cover-image-cli
+```
+
+If the user wants you to generate an image and you haven't set up the API key yet, you must first configure the CLI using a Gemini API Key. The CLI stores this securely via the `conf` package.
+
 If the user wants you to generate an image and you haven't set up the API key yet, you must first configure the CLI using a Gemini API Key. The CLI stores this securely via the `conf` package.
 
 ```bash

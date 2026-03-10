@@ -19,7 +19,9 @@
   "files": [
     "bin",
     "src",
-    "examples"
+    "examples",
+    "agent-skill",
+    "index.js"
   ],
   "dependencies": {
     "@google/genai": "^1.44.0",
