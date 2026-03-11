@@ -42,6 +42,28 @@ async function getApiKey() {
   }
   return apiKey;
 }
+async function getBrandfetchId() {
+  let brandfetchId = config.get('BRANDFETCH_CLIENT_ID');
+  if (!brandfetchId) {
+    console.log(chalk.yellow('Brandfetch Client ID not found.'));
+    try {
+      brandfetchId = await password({
+        message: 'Enter your Brandfetch Client ID:',
+        validate: (value) => value.length > 0 || 'Client ID cannot be empty',
+      });
+      config.set('BRANDFETCH_CLIENT_ID', brandfetchId);
+      console.log(chalk.green('Brandfetch Client ID saved successfully.'));
+    } catch (error) {
+      if (error.name === 'ExitPromptError') {
+        console.log(chalk.red('\nOperation cancelled.'));
+        process.exit(0);
+      }
+      throw error;
+    }
+  }
+  return brandfetchId;
+}
+
 
 program
   .name('blog-cover-cli')
@@ -79,6 +101,36 @@ configCmd
     config.delete('GEMINI_API_KEY');
     console.log(chalk.green('Gemini API Key deleted.'));
   });
+configCmd
+  .command('set-brandfetch-id')
+  .description('Set Brandfetch Client ID')
+  .argument('<id>', 'Brandfetch Client ID')
+  .action((id) => {
+    config.set('BRANDFETCH_CLIENT_ID', id);
+    console.log(chalk.green('Brandfetch Client ID updated.'));
+  });
+
+configCmd
+  .command('get-brandfetch-id')
+  .description('Get Brandfetch Client ID (masked)')
+  .action(() => {
+    const id = config.get('BRANDFETCH_CLIENT_ID');
+    if (id) {
+      const masked = id.slice(0, 4) + '*'.repeat(Math.max(0, id.length - 8)) + id.slice(-4);
+      console.log(`BRANDFETCH_CLIENT_ID: ${chalk.blue(masked)}`);
+    } else {
+      console.log(chalk.yellow('No Brandfetch Client ID set.'));
+    }
+  });
+
+configCmd
+  .command('delete-brandfetch-id')
+  .description('Delete Brandfetch Client ID')
+  .action(() => {
+    config.delete('BRANDFETCH_CLIENT_ID');
+    console.log(chalk.green('Brandfetch Client ID deleted.'));
+  });
+
 
 program
   .command('generate', { isDefault: true })
@@ -100,7 +152,8 @@ program
       console.log(chalk.blue('Fetching logo...'));
       let logoData = null;
       if (logo) {
-        logoData = await fetchLogo(logo);
+        const brandfetchId = await getBrandfetchId();
+        logoData = await fetchLogo(logo, brandfetchId);
         if (!logoData) {
           console.log(chalk.yellow(`Warning: Could not fetch logo for "${logo}". Proceeding without logo.`));
         }

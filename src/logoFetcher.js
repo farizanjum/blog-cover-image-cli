@@ -3,15 +3,20 @@ import sharp from 'sharp';
 /**
  * Fetches a logo from a domain or URL and converts it to PNG.
  * @param {string} logoInput - Domain (e.g., 'google.com') or full URL.
+ * @param {string} [clientId] - Brandfetch Client ID.
  * @returns {Promise<{ data: string, mimeType: string } | null>}
  */
-export async function fetchLogo(logoInput) {
+export async function fetchLogo(logoInput, clientId) {
   let url;
   if (logoInput.startsWith('http://') || logoInput.startsWith('https://')) {
     url = logoInput;
   } else {
-    // Assume it's a domain
-    url = `https://logos.hunter.io/${logoInput}`;
+    // Assume it's a domain, use Brandfetch API if clientId is provided
+    if (clientId) {
+      url = `https://cdn.brandfetch.io/${logoInput}/type/logo?c=${clientId}`;
+    } else {
+      url = `https://logos.hunter.io/${logoInput}`;
+    }
   }
 
   try {
