@@ -11,12 +11,8 @@ export async function fetchLogo(logoInput, clientId) {
   if (logoInput.startsWith('http://') || logoInput.startsWith('https://')) {
     url = logoInput;
   } else {
-    // Assume it's a domain, use Brandfetch API if clientId is provided
-    if (clientId) {
-      url = `https://cdn.brandfetch.io/${logoInput}/type/logo?c=${clientId}`;
-    } else {
-      url = `https://logos.hunter.io/${logoInput}`;
-    }
+    // Assume it's a domain, use Brandfetch API
+    url = `https://cdn.brandfetch.io/${logoInput}/type/logo?c=${clientId}`;
   }
 
   try {
