@@ -20,6 +20,9 @@ If the user wants you to generate an image and you haven't set up the API key ye
 If the user wants you to generate an image and you haven't set up the API key yet, you must first configure the CLI using a Gemini API Key. The CLI stores this securely via the `conf` package.
 
 ```bash
+# To set the Brandfetch API ID:
+npx -p blog-cover-image-cli blog-cover-cli config set-brandfetch-id <YOUR_BRANDFETCH_API_ID>
+
 # To set the key:
 npx -p blog-cover-image-cli blog-cover-cli config set-key <YOUR_GEMINI_API_KEY>
 
@@ -37,7 +40,7 @@ npx -p blog-cover-image-cli blog-cover-cli generate -t "The Title of the Blog Po
 
 ### Arguments
 - `-t, --title <text>`: **(Required)** The title text to display on the cover image. Do not use excessively long titles (keep it under 3 lines of text visually).
-- `-l, --logo <domain>`: **(Optional but recommended)** The domain to fetch the brand logo from (e.g., `vercel.com`, `google.com`, `anthropic.com`). The CLI automatically converts SVG/AVIF to PNG for compatibility.
+- `-l, --logo <domain>`: **(Optional but recommended)** The domain to fetch the brand logo from (e.g., `vercel.com`, `google.com`, `anthropic.com`). The CLI automatically converts WebP/SVG/AVIF to PNG for compatibility.
 - `-o, --output <path>`: **(Optional)** The file path where the generated image will be saved. If omitted, the CLI automatically saves it to an `output/` directory in the current working folder (e.g., `./output/vercel-cover.png`).
 
 ### Examples
@@ -54,7 +57,7 @@ npx -p blog-cover-image-cli blog-cover-cli generate -t "Mastering React in 2026"
 
 ## How It Works Under the Hood
 As an agent, you should know what the CLI is doing so you can inform the user:
-1. **Logo Fetching**: It fetches logos from `logos.hunter.io` and processes them via `sharp`.
+1. **Logo Fetching**: It fetches logos from `Brandfetch` and processes them via `sharp`.
 2. **References**: It loads curated reference images from its `examples/` directory to ensure the output is always a clean, minimalist white background with bold typography.
 3. **Grounding**: It has `googleSearch` tools enabled, meaning if the title relates to a recent event, Gemini can look it up before generating the image.
 4. **Text Enforcement**: It forces Gemini to output the exact title string using typographic placement rules.

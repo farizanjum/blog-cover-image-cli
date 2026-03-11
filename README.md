@@ -12,7 +12,7 @@ It handles everything from fetching company logos to pixel-perfect typography in
 
 ## Features
 - **Full AI Generation**: Uses `gemini-3.1-flash-image-preview` to generate the entire image.
-- **Smart Logo Fetching**: Pass a domain (like `vercel.com`) and the CLI automatically fetches the logo using `logos.hunter.io`, normalizes it to PNG via `sharp`, and injects it into the AI context.
+- **Smart Logo Fetching**: Pass a domain (like `vercel.com`) and the CLI automatically fetches the logo using `Brandfetch`, normalizes it to PNG via `sharp`, and injects it into the AI context.
 - **Aesthetic Control**: Bundled with `examples/` that automatically guide the model to produce clean, white-background, heavy-typography styles.
 - **Google Search Grounding**: The image generation is hooked into Google Search to pull real-time data if your title involves current events.
 - **Agent Ready**: Includes an OpenCode `SKILL.md` so your favorite AI agents can use this CLI autonomously.
@@ -36,6 +36,9 @@ npm install -g blog-cover-image-cli
 The CLI securely stores your API key on your local machine using the `conf` package so you don't have to export it every time.
 
 ```bash
+# Set your Brandfetch API ID (Required for logos)
+blog-cover-cli config set-brandfetch-id <YOUR_BRANDFETCH_API_ID>
+
 # Set your Gemini API Key
 blog-cover-cli config set-key <YOUR_GEMINI_API_KEY>
 
@@ -82,7 +85,7 @@ This package includes a structured OpenCode skill! Agents can install this packa
 ---
 
 ## How it works under the hood
-1. **Logo Fetcher**: Hits `logos.hunter.io`, parses SVGs/AVIFs, and converts to strict PNGs.
+1. **Logo Fetcher**: Hits `Brandfetch`, parses WebP/SVGs/AVIFs, and converts to strict PNGs.
 2. **Context Assembly**: Loads aesthetic examples from the `./examples` folder to ground the style.
 3. **Multimodal Prompting**: Assembles the exact text instructions, the visual examples, and the fetched logo into a single unified payload.
 4. **Google GenAI SDK**: Sends the payload with `tools: [{ googleSearch: {} }]` to the Imagen 3 endpoint.
